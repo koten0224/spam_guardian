@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/koten0224/spam_guardian"
   spec.license       = "MIT"
 
-  spec.metadata["allowed_push_host"] = "git@github.com:koten0224/spam_guardian.git"
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/koten0224/spam_guardian"
