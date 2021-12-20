@@ -1,4 +1,3 @@
-
 module SpamGuardian
   IpCheck = Struct.new(:ip) do
     def valid?
