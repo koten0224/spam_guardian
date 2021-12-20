@@ -5,35 +5,40 @@ require 'json'
 require 'spam_guardian/email_check'
 require 'spam_guardian/ip_check'
 require 'spam_guardian/client'
+require 'spam_guardian/value_check'
+require 'spam_guardian/params_builder'
 module SpamGuardian
-  Validator = Struct.new(:ip_or_email) do
+  class Validator
+    attr_reader :params, :spams, :response
+    def initialize(object)
+      @params = ParamsBuilder.new(object)
+      @spams = []
+    end
 
     def valid?
-      return unless ip_or_email.is_a?(String) && key.present?
       validate!
-      @valid
+      spams.count.zero?
     end
 
     def validate!
       return if @validated
       @response = Client.new.get(params)
-      @valid = @response[key].fetch('frequency', 0).to_i.zero?
+      params.each_key do |key|
+        case response[key]
+        when Hash
+          validate_response(response[key])
+        when Array
+          response[key].each do |hash|
+            validate_response(hash)
+          end
+        end
+      end
       @validated = true
     end
 
-    def params
-      { key => ip_or_email }
-    end
-
-    def key
-      @key ||= begin
-        if EmailCheck.new(ip_or_email).valid?
-          'email'
-        elsif IpCheck.new(ip_or_email).valid?
-          'ip'
-        else
-          'username'
-        end
+    def validate_response(response)
+      unless response.fetch('frequency', 0).to_i.zero?
+        spams << response.fetch('value', '')
       end
     end
   end
