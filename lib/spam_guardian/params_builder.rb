@@ -1,3 +1,8 @@
+require 'active_support'
+require 'active_support/core_ext'
+require 'spam_guardian/email_check'
+require 'spam_guardian/ip_check'
+require 'spam_guardian/value_check'
 module SpamGuardian
   class ParamsBuilder < ActiveSupport::HashWithIndifferentAccess
     # Support string

@@ -5,6 +5,8 @@ require 'json'
 require 'spam_guardian/email_check'
 require 'spam_guardian/ip_check'
 require 'spam_guardian/client'
+require 'spam_guardian/value_check'
+require 'spam_guardian/params_builder'
 module SpamGuardian
   class Validator
     attr_reader :params, :spams, :response
